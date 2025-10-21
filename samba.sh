@@ -86,11 +86,11 @@ import() { local file="$1" name id
 #   none)
 # Return: result
 perms() { local i file=/etc/samba/smb.conf
-    for i in $(awk -F ' = ' '/   path = / {print $2}' $file); do
-        chown -Rh smbuser. $i
-        find $i -type d ! -perm 775 -exec chmod 775 {} \;
-        find $i -type f ! -perm 0664 -exec chmod 0664 {} \;
-    done
+    #for i in $(awk -F ' = ' '/   path = / {print $2}' $file); do
+    #    chown -Rh smbuser. $i
+    #    find $i -type d ! -perm 775 -exec chmod 775 {} \;
+    #    find $i -type f ! -perm 0664 -exec chmod 0664 {} \;
+    #done
 }
 export -f perms
 
@@ -293,5 +293,5 @@ elif ps -ef | egrep -v grep | grep -q smbd; then
     echo "Service already running, please restart container to apply changes"
 else
     [[ ${NMBD:-""} ]] && ionice -c 3 nmbd -D
-    exec ionice -c 3 smbd -FS --no-process-group </dev/null
+    exec ionice -c 3 smbd --no-process-group </dev/null
 fi
